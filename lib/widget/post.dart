@@ -2,16 +2,61 @@ import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {
   final String id;
-  Post({this.id});
+  final String name;
+  final String day;
+  final String time;
+  final String status;
+  final String image;
+  final int likes;
+  final int shares;
+  final int comments;
+
+  Post(
+      {this.id,
+      this.image,
+      this.comments,
+      this.day,
+      this.likes,
+      this.name,
+      this.shares,
+      this.status,
+      this.time});
   @override
   _PostState createState() => _PostState();
 }
 
 class _PostState extends State<Post> {
-  
+  int _likes = 0;
+  void likesIncrementer() {
+    setState(() {
+      _likes++;
+    });
+  }
+
+  buildSnackBar() {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text("Hello"),
+      action: SnackBarAction(
+        label: "Pressed",
+        onPressed: () {},
+      ),
+    ));
+  }
+
+  buildBottomSheet() {}
+
   @override
   Widget build(BuildContext context) {
     var id = widget.id;
+    var name = widget.name;
+    var day = widget.day;
+    var time = widget.time;
+    var status = widget.status;
+    var image = widget.image;
+
+    var comments = widget.comments;
+    var shares = widget.shares;
+
     return Column(
       children: <Widget>[
         //profile icon, name description, horizontal icon
@@ -24,7 +69,7 @@ class _PostState extends State<Post> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: CircleAvatar(
-                    child: Text("B"),
+                    child: Text(id),
                     backgroundColor: Colors.grey,
                     radius: 20.0,
                   ),
@@ -35,12 +80,12 @@ class _PostState extends State<Post> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "My Facebook",
+                      name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text("Yesterday at 7:79 PM"),
+                    Text(day + " at " + time),
                   ],
                 ),
               ],
@@ -49,6 +94,38 @@ class _PostState extends State<Post> {
               icon: Icon(Icons.more_horiz),
               onPressed: () {
                 //open alert box
+
+                //show Snackbar
+                // buildSnackBar();
+                //show bottomSheet
+                // buildBottomSheet();
+                showBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                          color: Colors.red,
+                        ))),
+                        child: ListView(
+                          shrinkWrap: true,
+                          primary: false,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.save),
+                              title: Text("Save Post"),
+                              subtitle: Text("Add this to your saved items"),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.keyboard_hide),
+                              title: Text("Hide Post"),
+                              subtitle: Text("See Fewer Post Like This"),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
               },
             ),
           ],
@@ -56,14 +133,27 @@ class _PostState extends State<Post> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SafeArea(
-            child: Text(
-                id + " Hello code java not hawa.. Flutter is khatra.. sikena vane khudahanchu.. tesaile siknu pryo"),
+            child: Text(status),
           ),
         ),
-        Image.network("https://tmssl.akamaized.net//images/foto/normal/cristiano-ronaldo-im-trikot-von-juventus-1576149790-28250.jpg"),
+        Image.network(image),
+        Padding(
+          padding: EdgeInsets.all(5.0),
+        ),
         //Emoji haru
-        Row(
 
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: Text("$_likes Likes"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: Text("$comments Comments . $shares Shares"),
+            )
+          ],
         ),
         Divider(
           color: Colors.grey,
@@ -74,25 +164,41 @@ class _PostState extends State<Post> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             //3 Rows
-            Row(
-              children: <Widget>[
-                Icon(Icons.thumb_up),
-                Text("Like"),
-              ],
+            FlatButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.thumb_up),
+                  Text("Like"),
+                ],
+              ),
+              onPressed: likesIncrementer,
+              onLongPress: () {},
             ),
-            Row(
-              children: <Widget>[
-                Icon(Icons.comment),
-                Text("Comment"),
-              ],
+            FlatButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.comment),
+                  Text("Comment"),
+                ],
+              ),
+              onPressed: () {},
+              onLongPress: () {},
             ),
-            Row(
-              children: <Widget>[
-                Icon(Icons.share),
-                Text("Share"),
-              ],
+            FlatButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.share),
+                  Text("Shares"),
+                ],
+              ),
+              onPressed: () {},
+              onLongPress: () {},
             ),
           ],
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 10.0,
         ),
       ],
     );

@@ -1,6 +1,8 @@
+import 'package:facebook/Json/json.dart';
 import 'package:facebook/function/functions.dart';
 // import 'package:facebook/pages/profile.dart';
 import 'package:facebook/widget/post.dart';
+import 'package:facebook/widget/story.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -9,46 +11,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  var myPosts = [
-    {
-      'id':"1"
-    },
-    {
-      'id':"2"
-    },
-    {
-      'id':"3"
-    },
-    {
-      'id':"4"
-    },
-  ];
-
+  var myPosts = Json.json;
   @override
   Widget build(BuildContext context) {
     var mediaQ = MediaQuery.of(context);
     return SingleChildScrollView(
-          child: Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: CircleAvatar(
-                  
                   child: Text("P"),
                   backgroundColor: Colors.grey,
                   radius: 20.0,
                 ),
               ),
               OutlineButton(
-              child: Text("What's on your mind?"),
-              // clipBehavior: Clip.hardEdge,
-              onPressed: (){
-
-              },
-                ),
+                child: Text("What's on your mind?"),
+                // clipBehavior: Clip.hardEdge,
+                onPressed: () {},
+              ),
               // ClipRect(
               //   clipBehavior: Clip.antiAlias,
               //   child: TextField(
@@ -63,6 +48,7 @@ class _HomeState extends State<Home> {
               // ),
             ],
           ),
+
           Row(
             children: <Widget>[
               Container(
@@ -127,22 +113,34 @@ class _HomeState extends State<Home> {
                       ),
                     ],
                   ),
-                  onPressed: () {
-                  
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],
           ),
-          
-          ...myPosts.map((item){
+          Divider(
+            color: Colors.grey,
+            thickness: 10.0,
+          ),
+          Story(),
+          Divider(
+            color: Colors.grey,
+            thickness: 10.0,
+          ),
+          ...myPosts.map((item) {
             return Post(
               id: item['id'],
+              name: item['name'],
+              day: item['day'],
+              time: item['time'],
+              status: item['status'],
+              image: item['image'],
+              likes: item['likes'],
+              comments: item['comment'],
+              shares: item['shares'],
             );
           }).toList(),
-          
         ],
-
       ),
     );
   }
